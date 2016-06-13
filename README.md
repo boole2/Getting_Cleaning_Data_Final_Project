@@ -3,8 +3,8 @@
 
 The purpose of the script run_analysis, is to produce a tidy dataset, Starting from data sampled at 50Hz by Smartphones as motion sensors with 30 volunteers and monitoring 6 different Activity and
 pre-pocessed to produce 561 different measures both in time window then in frequency domain (by FFT).
-At the very end the tidy dataset produced present average value of all the original measures grouped by Activity and Subject.
-So the tidy file has  180 = 6 Activity * 30 subject row and 561 average value in column.
+At the very end the tidy dataset produced present average value of all the original measures for mean and std grouped by Activity and Subject.
+So the tidy file has  180 = 6 Activity * 30 subject row and 66 average value in column.
 
 
 the step followed in the R script are:

@@ -2,7 +2,7 @@
 library(dplyr)
 library(data.table)
 library(tidyr)
-#library(reshape2)
+
 
 #Step 1 - Download File and Read Traing & Test Data Set
 
@@ -93,16 +93,16 @@ df_all_tbl <- data.table(df_all)
 
 #grep only mean or std column 
 df_mean_std <- df_all_tbl %>%
-        select(grep("mean\\(\\)|std\\(\\)", names(df_all_tbl))) 
+        select(activity, subject, grep("mean\\(\\)|std\\(\\)", names(df_all_tbl))) 
 
-names(df_mean_std)
-head(df_mean_std)
 
-#Step 4-  Uses descriptive activity names to name the activities in the data set 
-df_all_tbl <- df_all_tbl %>%
+  
+
+#Step 4-  Uses descriptive activity names to name the activities in the data set#using only the subset of the original data.frame with only the mean and std values 
+df_all_tbl <- df_mean_std %>%
          mutate(activity = activityNames[activity,]$V2 )  
 head(select(df_all_tbl, 1:3))     
-        
+
 
 #Appropriately labels the data set with descriptive variable names.
 # Raname column with valid column names removing duplicate
@@ -119,8 +119,8 @@ names(df_all_tbl) <- gsub("Mag","Magnitude", names(df_all_tbl) )
 names(df_all_tbl) <- gsub("BodyBody","Body", names(df_all_tbl) )
 
 
-names(df_all_tbl)
-
+#save new Variables name for codebook document.
+write.table( data.frame ( new_name = names(df_all_tbl)), "new_name.txt", row.names = TRUE, quote = FALSE)
 
 #Step 5- From the data set in step 4, creates a second, independent tidy data set 
 #with the average of each variable for each activity and each subject.
@@ -137,12 +137,12 @@ dim(df_all_tbl_fact_melted)
 
 
 df_all_tbl_tidy__mean <- dcast(df_all_tbl_fact_melted, subject + activity ~ variable, mean)
-#check if Cast inversion create the 6 activity* 30 subjact = 180 row, x 563 column with avarage tidy data frame.
+#check if Cast inversion create the 6 activity* 30 subjact = 180 row, x 66 column with avarage tidy data frame.
 dim(df_all_tbl_tidy__mean)
 head(select( df_all_tbl_tidy__mean, 1:5))
 tail(select( df_all_tbl_tidy__mean, 1:5))
 #check result last 13 variables for subject 2 activity SITTING
-head(df_all_tbl_tidy__mean %>%  filter(subject ==2 & activity == "SITTING" ) %>%  select(550:563) )
+head(df_all_tbl_tidy__mean %>%  filter(subject ==2 & activity == "SITTING" ) %>%  select(55:68) )
 
 
 write.table(df_all_tbl_tidy__mean, "tidy.txt", row.names = FALSE, quote = FALSE)
